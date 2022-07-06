@@ -22,7 +22,6 @@ const loginUser = async (req, res) => {
 				const accessToken = await signAccessToken(user.id, user.email);
 				res.cookie('accessToken', accessToken, {
 					maxAge: 3600000,
-					httpOnly: true,
 				});
 				res.status(201).send({
 					ok: true,
