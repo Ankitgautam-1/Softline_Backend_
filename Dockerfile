@@ -1,7 +1,7 @@
 FROM node:alpine
 WORKDIR /app
 COPY . .
-RUN yum install python
+RUN apk add python3 nodejs
 RUN npm ci
 RUN npm audit fix
 EXPOSE 3001
