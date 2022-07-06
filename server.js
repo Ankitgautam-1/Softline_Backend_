@@ -22,8 +22,10 @@ app.use(
     origin: [
       "http://3.110.205.180",
       "http://localhost",
+      "http://localhost:3000",
       "http://localhost:4173",
       "http://3.110.205.180:8080",
+      "http://3.110.205.180:3001",
     ],
     methods: ["GET", "POST"],
   })
