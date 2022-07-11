@@ -13,28 +13,35 @@ const loginUser = async (req, res) => {
 		if (!user) {
 			res.status(400).send({ ok: false, mesage: 'No user is found' });
 		} else {
-			const deCrpytPassword = await bcrypt.compare(
-				password.toString(),
-				user.password.toString()
-			);
-
-			if (deCrpytPassword) {
-				const accessToken = await signAccessToken(user.id, user.email);
-				res.cookie('accessToken', accessToken, {
-					maxAge: 3600000,
-				});
-				res.status(201).send({
-					ok: true,
-					userID: user.id,
-					accessToken: `Bearer ${accessToken}`,
-					userEmail: user.email,
-				});
-			} else {
-				res.status(400).send({
-					ok: false,
-					mesage: 'password is incorrect',
-				});
-			}
+			bcrypt.compare(password, user.password, async (err, result) => {
+				if (err) {
+					res.status(201).send({
+						ok: false,
+						error: err,
+					});
+				} else {
+					if (result) {
+						const accessToken = await signAccessToken(
+							user.id,
+							user.email
+						);
+						res.cookie('accessToken', accessToken, {
+							maxAge: 3600000,
+						});
+						res.status(201).send({
+							ok: true,
+							userID: user.id,
+							accessToken: `Bearer ${accessToken}`,
+							userEmail: user.email,
+						});
+					} else {
+						res.status(400).send({
+							ok: false,
+							mesage: 'password is incorrect',
+						});
+					}
+				}
+			});
 		}
 	} catch (error) {
 		if (error.isJoi === true) {
