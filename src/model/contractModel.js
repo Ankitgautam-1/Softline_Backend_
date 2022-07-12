@@ -49,11 +49,12 @@ const ContractSchema = new mongoose.Schema({
 		required: false,
 		type: String,
 	},
+
 	ownerId: {
 		required: true,
 		type: String,
 	},
 });
 
-const ContractModel = mongoose.model('contracts', ContractSchema);
+const ContractModel = mongoose.model('contract', ContractSchema);
 export default ContractModel;

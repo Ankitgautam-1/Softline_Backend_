@@ -4,6 +4,7 @@ import contractSchema from '../schema/contractSchema.js';
 
 const createContract = async (req, res) => {
 	try {
+		console.log('create Contract');
 		const validation = await contractSchema.validateAsync(req.body);
 
 		console.log(validation);
@@ -25,8 +26,9 @@ const createContract = async (req, res) => {
 					typeOfHours: validation.typeOfHours,
 					totalEntitlement: validation.totalEntitlement,
 					projectManager: validation.projectManager,
-					remarks: validation.remarks,
+					remarks: validation.remarks ?? ' ',
 					ownerId: validation.ownerId,
+					state: validation.state,
 				});
 				console.log(newContract);
 				const result = await newContract.save();
@@ -40,13 +42,14 @@ const createContract = async (req, res) => {
 			res.status(402).send(error);
 		}
 	} catch (error) {
+		console.log('error', error);
 		if (error.isJoi) {
-			res.status(401).send({
+			res.status(400).send({
 				ok: false,
 				error: error.details[0].message,
 			});
 		} else {
-			res.status(401).send({ ok: false, error: error });
+			res.status(400).send({ ok: false, error: error });
 		}
 	}
 };
