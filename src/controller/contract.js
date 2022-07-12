@@ -50,8 +50,6 @@ const createContract = async (req, res) => {
 			});
 		} else {
 			res.status(400).send({ ok: false, error: error });
-<<<<<<< Updated upstream
-=======
 		}
 	}
 };
@@ -72,7 +70,6 @@ const editContract = async (req, res) => {
 			});
 		} else {
 			res.status(400).send({ ok: false, error: error });
->>>>>>> Stashed changes
 		}
 	}
 };
