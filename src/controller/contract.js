@@ -4,6 +4,7 @@ import contractSchema from '../schema/contractSchema.js';
 
 const createContract = async (req, res) => {
 	try {
+		console.log('create Contract');
 		const validation = await contractSchema.validateAsync(req.body);
 
 		try {
@@ -48,6 +49,7 @@ const createContract = async (req, res) => {
 			});
 		} else {
 			res.status(400).send({ ok: false, error: error });
+<<<<<<< HEAD
 		}
 	}
 };
@@ -177,6 +179,31 @@ const editContract = async (req, res) => {
 		res.send({ ok: false, error: error });
 	}
 };
+=======
+		}
+	}
+};
+const editContract = async (req, res) => {
+	try {
+		const result = await contractSchema.validateAsync(req.body);
+		const contract = await ContractModel.findOne({ id: result.id });
+		if (contract) {
+			res.status(400).json({ ok: true, message: contract });
+		} else {
+			res.status(400).json({ ok: false, error: 'Contract not found' });
+		}
+	} catch (error) {
+		if (error.isJoi) {
+			res.status(400).send({
+				ok: false,
+				error: error.details[0].message,
+			});
+		} else {
+			res.status(400).send({ ok: false, error: error });
+		}
+	}
+};
+>>>>>>> 0ee66c0503768190662e340a9ed4dc2b04fcd670
 const getContract = async (req, res) => {
 	const result = await ContractModel.find();
 	res.send({ ok: true, contracts: result });
@@ -186,21 +213,39 @@ const paginated = async (req, res) => {
 	const {
 		page = 1,
 		limit = 10,
+<<<<<<< HEAD
 		filterValue = '009',
+=======
+		filterMode = '009',
+>>>>>>> 0ee66c0503768190662e340a9ed4dc2b04fcd670
 		filterColumn = '',
 	} = req.query;
 	const number = '009';
 	try {
+<<<<<<< HEAD
 		// execute query with page and limit values
 		if (filterColumn === 'id') {
 			const contract = await ContractModel.find({
 				[filterColumn]: { $gte: filterValue },
+=======
+		console.log('filterMode', typeof filterMode, filterMode);
+		// execute query with page and limit values
+		if (filterColumn === 'id') {
+			console.log('filter for id');
+
+			const contract = await ContractModel.find({
+				[filterColumn]: { $gte: filterMode },
+>>>>>>> 0ee66c0503768190662e340a9ed4dc2b04fcd670
 			})
 				.limit(limit * 1)
 				.skip((page - 1) * limit)
 				.exec();
 			const count = await ContractModel.find({
+<<<<<<< HEAD
 				[filterColumn]: { $gte: filterValue },
+=======
+				[filterColumn]: { $gte: filterMode },
+>>>>>>> 0ee66c0503768190662e340a9ed4dc2b04fcd670
 			}).count();
 
 			// return response with posts, total pages, and current page
@@ -219,7 +264,13 @@ const paginated = async (req, res) => {
 			filterColumn === 'projectManager' ||
 			filterColumn === 'remarks'
 		) {
+<<<<<<< HEAD
 			const newRegex = new RegExp(`${filterValue}`);
+=======
+			console.log('filter for string');
+
+			const newRegex = new RegExp(`${filterMode}`);
+>>>>>>> 0ee66c0503768190662e340a9ed4dc2b04fcd670
 			const contract = await ContractModel.find({
 				[filterColumn]: { $regex: newRegex },
 			})
@@ -239,7 +290,13 @@ const paginated = async (req, res) => {
 				totalRow: count,
 			});
 		} else if (filterColumn === 'assets') {
+<<<<<<< HEAD
 			const arrayofData = filterValue.split(',');
+=======
+			console.log('filterColumn', filterColumn.toLowerCase());
+			const arrayofData = filterMode.split(',');
+			console.log('arrayofData', arrayofData);
+>>>>>>> 0ee66c0503768190662e340a9ed4dc2b04fcd670
 
 			const contract = await ContractModel.find({
 				[filterColumn.toLowerCase()]: { $in: arrayofData },
@@ -260,11 +317,19 @@ const paginated = async (req, res) => {
 				totalRow: count,
 			});
 		} else {
+<<<<<<< HEAD
+=======
+			console.log('All data');
+>>>>>>> 0ee66c0503768190662e340a9ed4dc2b04fcd670
 			const contract = await ContractModel.find({})
 				.limit(limit * 1)
 				.skip((page - 1) * limit)
 				.exec();
+<<<<<<< HEAD
 
+=======
+			console.log('contract', contract);
+>>>>>>> 0ee66c0503768190662e340a9ed4dc2b04fcd670
 			const count = await ContractModel.countDocuments();
 
 			res.json({
@@ -283,4 +348,8 @@ const paginated = async (req, res) => {
 	}
 };
 export default createContract;
+<<<<<<< HEAD
 export { getContract, paginated, editContract };
+=======
+export { getContract, editContract, paginated };
+>>>>>>> 0ee66c0503768190662e340a9ed4dc2b04fcd670
