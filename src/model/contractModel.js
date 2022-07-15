@@ -54,6 +54,10 @@ const ContractSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
+  state: {
+    required: true,
+    type: String,
+  },
 });
 
 const ContractModel = mongoose.model("contract", ContractSchema);
