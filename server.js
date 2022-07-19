@@ -43,6 +43,7 @@ mongooose
   .connect(mongourl, options)
   .then((con) => {
     app.get("/", async (req, res) => {
+      req.form;
       res.send({ ok: true, message: "server is online" });
     });
     app.use(authRoute);

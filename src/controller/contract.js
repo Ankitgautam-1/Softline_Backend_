@@ -28,6 +28,7 @@ const createContract = async (req, res) => {
           remarks: validation.remarks ?? " ",
           ownerId: validation.ownerId,
           state: validation.state,
+          createdDate: validation.createdDate,
         });
 
         const result = await newContract.save();
@@ -190,19 +191,21 @@ const paginated = async (req, res) => {
     filterValue = "009",
     filterColumn = "",
   } = req.query;
-  const number = "009";
   try {
     // execute query with page and limit values
     if (filterColumn === "id") {
       const contract = await ContractModel.find({
         [filterColumn]: { $gte: filterValue },
       })
+        .sort({ createdDate: "desc" })
         .limit(limit * 1)
         .skip((page - 1) * limit)
         .exec();
       const count = await ContractModel.find({
         [filterColumn]: { $gte: filterValue },
-      }).count();
+      })
+        .sort({ createdDate: "desc" })
+        .count();
 
       // return response with posts, total pages, and current page
       res.json({
@@ -222,14 +225,17 @@ const paginated = async (req, res) => {
     ) {
       const newRegex = new RegExp(`${filterValue}`);
       const contract = await ContractModel.find({
-        [filterColumn]: { $regex: newRegex },
+        [filterColumn]: { $regex: newRegex, $options: "i" },
       })
+        .sort({ createdDate: "desc" })
         .limit(limit * 1)
         .skip((page - 1) * limit)
         .exec();
       const count = await ContractModel.find({
         [filterColumn]: { $regex: newRegex },
-      }).count();
+      })
+        .sort({ createdDate: "desc" })
+        .count();
 
       // return response with posts, total pages, and current page
       res.json({
@@ -239,18 +245,24 @@ const paginated = async (req, res) => {
         currentPage: page,
         totalRow: count,
       });
-    } else if (filterColumn === "assets") {
+    } else if (filterColumn === "assets" || filterColumn === "serviceItem") {
+      4;
+      console.log("in service item", filterColumn);
+
       const arrayofData = filterValue.split(",");
 
       const contract = await ContractModel.find({
-        [filterColumn.toLowerCase()]: { $in: arrayofData },
+        [filterColumn]: { $in: arrayofData },
       })
+        .sort({ createdDate: "desc" })
         .limit(limit * 1)
         .skip((page - 1) * limit)
         .exec();
       const count = await ContractModel.find({
         [filterColumn]: { $in: arrayofData },
-      }).count();
+      })
+        .sort({ createdDate: "desc" })
+        .count();
 
       // return response with posts, total pages, and current page
       res.json({
@@ -262,6 +274,7 @@ const paginated = async (req, res) => {
       });
     } else {
       const contract = await ContractModel.find({})
+        .sort({ createdDate: "desc" })
         .limit(limit * 1)
         .skip((page - 1) * limit)
         .exec();
@@ -282,5 +295,6 @@ const paginated = async (req, res) => {
     res.status(400).send({ ok: false, error: err });
   }
 };
+
 export default createContract;
 export { getContract, paginated, editContract };

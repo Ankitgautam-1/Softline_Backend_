@@ -33,6 +33,10 @@ const ContractSchema = new mongoose.Schema({
     required: true,
     type: Date,
   },
+  createdDate: {
+    required: true,
+    type: Date,
+  },
   typeOfHours: {
     required: true,
     type: String,
