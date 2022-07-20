@@ -67,15 +67,21 @@ const checkContractExist = async (req, res, next) => {
 };
 const getFiles = async (req, res) => {
   const fileNames = req.fileNames;
+  console.log("fileNames", fileNames);
+
   const folder = req.folder;
   if (fileNames.length > 0) {
     const s3 = new AWS.S3({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      signatureVersion: "v4",
+      s3ForcePathStyle: true,
     });
     s3Zip
+      .setFormat("tar")
       .archive(
         {
+          s3: s3,
           region: process.env.LOCATION,
           bucket: process.env.AWS_BUCKET_NAME,
           debug: true,
@@ -84,21 +90,6 @@ const getFiles = async (req, res) => {
         fileNames
       )
       .pipe(res);
-    // const transferManger=new AWS.Transfer({})
-    // const response = await s3
-    //   .listObjectsV2({
-    //     Bucket: process.env.AWS_BUCKET_NAME,
-    //     Prefix: "009",
-    //   })
-    //   .promise();
-
-    // const fileStream = s3
-    //   .getObject({
-    //     Bucket: process.env.AWS_BUCKET_NAME,
-    //     Key: "001/testContract.xlsx",
-    //   })
-    //   .createReadStream();
-    // fileStream.pipe(res);
   }
 };
 

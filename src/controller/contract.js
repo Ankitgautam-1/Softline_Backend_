@@ -29,6 +29,7 @@ const createContract = async (req, res) => {
           ownerId: validation.ownerId,
           state: validation.state,
           createdDate: validation.createdDate,
+          files: validation.files,
         });
 
         const result = await newContract.save();

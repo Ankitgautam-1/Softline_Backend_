@@ -53,7 +53,10 @@ const ContractSchema = new mongoose.Schema({
     required: false,
     type: String,
   },
-
+  files: {
+    required: false,
+    type: Boolean,
+  },
   ownerId: {
     required: true,
     type: String,

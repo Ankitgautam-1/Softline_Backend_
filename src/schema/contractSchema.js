@@ -15,6 +15,7 @@ const contractSchema = Joi.object({
   projectManager: Joi.string().required(),
   remarks: Joi.optional(),
   ownerId: Joi.string().required(),
+  files:Joi.boolean().optional()
 });
 
 export default contractSchema;
